@@ -1,0 +1,90 @@
+-- Executor GUI por ChatGPT
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local ScriptBox = Instance.new("TextBox")
+local ExecuteButton = Instance.new("TextButton")
+local ClearButton = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+local UIStroke = Instance.new("UIStroke")
+
+-- Ativando para mobile
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Name = "ExecutorGUI"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Janela principal
+MainFrame.Size = UDim2.new(0, 400, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Parent = ScreenGui
+
+-- Borda e cantos arredondados
+UICorner.CornerRadius = UDim.new(0, 12)
+UICorner.Parent = MainFrame
+
+UIStroke.Color = Color3.fromRGB(0, 170, 255)
+UIStroke.Thickness = 2
+UIStroke.Parent = MainFrame
+
+-- Título
+Title.Text = "🧠 Executor de Scripts"
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.BackgroundTransparency = 1
+Title.TextColor3 = Color3.new(1, 1, 1)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 18
+Title.Parent = MainFrame
+
+-- TextBox para scripts
+ScriptBox.Size = UDim2.new(1, -20, 0, 180)
+ScriptBox.Position = UDim2.new(0, 10, 0, 40)
+ScriptBox.MultiLine = true
+ScriptBox.ClearTextOnFocus = false
+ScriptBox.PlaceholderText = "Cole aqui seu script..."
+ScriptBox.TextColor3 = Color3.new(1, 1, 1)
+ScriptBox.TextWrapped = true
+ScriptBox.TextScaled = false
+ScriptBox.Font = Enum.Font.Code
+ScriptBox.TextSize = 16
+ScriptBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+ScriptBox.Parent = MainFrame
+
+-- Botão Executar
+ExecuteButton.Size = UDim2.new(0.5, -15, 0, 40)
+ExecuteButton.Position = UDim2.new(0, 10, 1, -50)
+ExecuteButton.Text = "🚀 Executar"
+ExecuteButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+ExecuteButton.Font = Enum.Font.GothamBold
+ExecuteButton.TextSize = 18
+ExecuteButton.TextColor3 = Color3.new(1, 1, 1)
+ExecuteButton.Parent = MainFrame
+
+-- Botão Clear
+ClearButton.Size = UDim2.new(0.5, -15, 0, 40)
+ClearButton.Position = UDim2.new(0.5, 5, 1, -50)
+ClearButton.Text = "🧹 Clear"
+ClearButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+ClearButton.Font = Enum.Font.GothamBold
+ClearButton.TextSize = 18
+ClearButton.TextColor3 = Color3.new(1, 1, 1)
+ClearButton.Parent = MainFrame
+
+-- Comportamentos dos botões
+ExecuteButton.MouseButton1Click:Connect(function()
+    local code = ScriptBox.Text
+    if code ~= "" then
+        local success, err = pcall(function()
+            loadstring(code)()
+        end)
+        if not success then
+            warn("Erro ao executar o script: ", err)
+        end
+    end
+end)
+
+ClearButton.MouseButton1Click:Connect(function()
+    ScriptBox.Text = ""
+end)
